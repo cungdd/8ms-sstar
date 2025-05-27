@@ -25,7 +25,7 @@ include $(LVGL_DIR)/tty/tty.mk
 include $(LVGL_DIR)/blockly/blockly.mk
 
 OBJEXT ?= .o
-MOBJS = $(MSRCS:.c=$(OBJEXT))
+MOBJS = $(patsubst %.c,build/%.o,$(MSRCS))
 
 DLIBS := -llvgl -lubus -lubox -lblobmsg_json -ljson-c -lcrypto -lwtinfo -lcJSON -lm -lbz2 -lz -lpng -lfreetype -lm
 all: clean prepare demo
@@ -33,12 +33,13 @@ all: clean prepare demo
 prepare:
 	@mkdir -p build bin
 
-%.o: %.c
-	@$(CC) $(CFLAGS) -c -o build/$@ $^
+build/%.o: %.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -c -o $@ $^
 	@echo "CC $^"
 
 demo: $(MOBJS)
-	$(CC) -o bin/$@ build/*.o -L./lib -L$(TOPDIR)/extra/lib/ $(DLIBS)
+	$(CC) -o bin/$@ $(MOBJS) -L./lib -L$(TOPDIR)/extra/lib/ $(DLIBS)
 	cp bin/$@ bin/$@_debug
 	$(STRIP) --strip-all bin/$@
 
