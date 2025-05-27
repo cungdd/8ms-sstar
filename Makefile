@@ -11,8 +11,13 @@ CFLAGS += -I$(LVGL_DIR)/
 CFLAGS += -DLV_CONF_INCLUDE_SIMPLE -DLV_EX_CONF_INCLUDE_SIMPLE
 CFLAGS += -I$(TOPDIR)/include/ -I$(TOPDIR)/include/lvgl/
 CFLAGS += -I$(TOPDIR)/extra/include/ -I$(TOPDIR)/extra/include/freetype2
+CFLAGS += -I$(TOPDIR)/lvgl/src/ui/
 
 MSRCS += $(shell find . -maxdepth 1 -name \*.c)
+
+# Thêm các file .c trong lvgl/src/ui vào danh sách source
+UI_SRCS := $(shell find $(TOPDIR)/lvgl/src/ui -name '*.c')
+MSRCS += $(UI_SRCS)
 
 include $(LVGL_DIR)/main/8ms.mk
 include $(LVGL_DIR)/control/control.mk

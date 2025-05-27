@@ -60,12 +60,16 @@
 //     return 0;
 // }
 
-#include <ui.h>
+#include "lvgl/src/ui/ui.h"
 
 int main(int argc, char *argv[])
 {
-    ui_init(argc, argv);
-    // ui_run();
-    // ui_deinit();
+    ui_init(); // Khởi tạo giao diện
+
+    while (1)
+    {
+        ui_tick(); // Cập nhật giao diện, nên gọi định kỳ
+        // Có thể thêm sleep hoặc delay nhỏ nếu cần
+    }
     return 0;
 }
